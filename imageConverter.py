@@ -8,6 +8,14 @@ from time import time
 import logging
 
 
+#def save_images(images):
+#
+#    for name, image in images.items():
+#        image.save(path.join(out_dir, path.split(name)[1]))
+#
+#    images.clear()
+
+
 def image_processing(img_names_dir, size, out_dir, is_monochrome):
 
     with open(img_names_dir) as img_names_file:
@@ -15,16 +23,28 @@ def image_processing(img_names_dir, size, out_dir, is_monochrome):
 
     logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S', level=logging.INFO,
                         filename=path.join(out_dir, path.splitext(path.split(img_names_dir)[1])[0]+'.log'))
+
     logging.info('Begin')
+
+    #images = {}
 
     for img_name in img_names:
         try:
             image = Image.open(img_name)
+            image.load()
             n_image = image.convert('L') if is_monochrome else image
             n_image.thumbnail(size)
+
+            #images[img_name] = n_image
+
+            #if len(images) >= 20:
+            #    save_images(images)
+
             n_image.save(path.join(out_dir, path.split(img_name)[1]))
         except Exception as e:
             logging.info('Got exception: {0}'.format(e))
+
+    #save_images(images)
 
     logging.info('End')
 
@@ -69,7 +89,7 @@ def main():
     for f in files:
         f.close()
 
-    out_dir = args['output'] if args['output'] else path.join(path.pardir, path.split(args['path'])[1]+'_{0}x{1}'.format(size[0], size[1]))
+    out_dir = args['output'] if args['output'] else path.join(path.pardir, path.split(args['path'])[1]+'_{0}x{1}'.format(size[0], size[1]) + ('_m' if args['monochrome'] else '' ))
     if not path.exists(out_dir):
         mkdir(out_dir)
 
