@@ -22,7 +22,7 @@ def main():
         with open(csv_file, 'rb') as f:
             data = f.read()
             data = data.replace(b'\r', b'')
-        with open(path.splitext(csv_file)[0] + '_update.csv', 'wb') as f:
+        with open(path.splitext(csv_file)[0] + '_updated.csv', 'wb') as f:
             f.write(data)
     except (FileNotFoundError, StopIteration):
         print('File not found')
