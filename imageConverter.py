@@ -8,13 +8,6 @@ from time import time
 import logging
 
 
-#def save_images(images):
-#
-#    for name, image in images.items():
-#        image.save(path.join(out_dir, path.split(name)[1]))
-#
-#    images.clear()
-
 
 def image_processing(img_names_dir, size, out_dir, is_monochrome):
 
@@ -32,19 +25,11 @@ def image_processing(img_names_dir, size, out_dir, is_monochrome):
         try:
             image = Image.open(img_name)
             image.load()
-            n_image = image.convert('L') if is_monochrome else image
+            n_image = image.convert('L') if is_monochrome else image.convert('RGB')
             n_image.thumbnail(size)
-
-            #images[img_name] = n_image
-
-            #if len(images) >= 20:
-            #    save_images(images)
-
             n_image.save(path.join(out_dir, path.split(img_name)[1]))
         except Exception as e:
             logging.info('Got exception: {0}'.format(e))
-
-    #save_images(images)
 
     logging.info('End')
 
